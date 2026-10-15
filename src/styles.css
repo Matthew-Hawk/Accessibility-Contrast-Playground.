@@ -533,6 +533,323 @@ footer {
   margin: auto;
 }
 
+.preview-panel,
+.vision-panel {
+  margin-top: 28px;
+  border: var(--line);
+  background: #fffef8;
+}
+.preview-intro,
+.vision-intro {
+  padding: 27px 27px 0;
+}
+.preview-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.preview-intro h3,
+.vision-intro h3 {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 30px;
+  letter-spacing: -1.2px;
+  line-height: 1.2;
+}
+.preview-intro p,
+.vision-intro p {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.preview-intro .pill {
+  flex-shrink: 0;
+}
+.preview-warning {
+  padding: 0 27px;
+  margin-top: 12px;
+  max-width: 770px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.preview-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 48px;
+  margin: 24px 27px 0;
+  padding: 36px;
+  border: var(--line);
+}
+.sample-kicker {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.6;
+}
+.preview-copy h3 {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: clamp(40px, 4.5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -2.5px;
+  margin: 22px 0;
+}
+.preview-copy p {
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 440px;
+}
+.preview-components {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px;
+  min-width: 0;
+}
+.sample-button,
+.sample-field input {
+  border: 2px solid currentColor;
+  background: transparent;
+  color: inherit;
+  min-height: 48px;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+.sample-button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  font-weight: 700;
+}
+.sample-button:active {
+  transform: translate(1px, 1px);
+}
+.sample-field {
+  width: 100%;
+}
+.sample-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.sample-field input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  caret-color: currentColor;
+}
+.sample-button:focus-visible,
+.sample-field input:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 0;
+  box-shadow: 0 0 0 6px var(--ink);
+}
+.sample-caption {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.preview-caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 20px;
+  padding: 17px 27px 22px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.vision-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  padding: 26px 27px;
+}
+.vision-card {
+  border: var(--line);
+  min-width: 0;
+}
+.vision-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border-bottom: var(--line);
+}
+.vision-card-header h4 {
+  margin: 0;
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 15px;
+  letter-spacing: -0.4px;
+}
+.vision-card-header > span {
+  font-family: monospace;
+  font-size: 10px;
+}
+.vision-sample {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 160px;
+  padding: 22px 18px;
+  border-bottom: var(--line);
+}
+.vision-type {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: -4px;
+  line-height: 1;
+}
+.vision-shapes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vision-circle,
+.vision-square {
+  width: 23px;
+  height: 23px;
+  border: 2px solid currentColor;
+}
+.vision-circle {
+  border-radius: 50%;
+  background: currentColor;
+}
+.vision-sample-copy {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.vision-details {
+  padding: 14px;
+}
+.vision-ratio {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 15px;
+}
+.vision-ratio > span {
+  font-size: 10px;
+}
+.vision-ratio strong {
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.vision-ratio strong span {
+  margin-left: 3px;
+  font-size: 16px;
+}
+.vision-details dl {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid #c7c7ba;
+}
+.vision-details dl > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 5px 8px;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.vision-details dl > div + div {
+  margin-top: 6px;
+}
+.vision-details dd {
+  margin: 0;
+  font: 700 11px monospace;
+  line-height: 1.6;
+}
+.vision-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 27px;
+  padding: 20px 0 24px;
+  border-top: var(--line);
+}
+.vision-note > span {
+  font-size: 26px;
+  line-height: 1;
+}
+.vision-note p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.vision-note p + p {
+  margin-top: 6px;
+}
+@media (max-width: 1100px) {
+  .vision-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 720px) {
+  .preview-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 26px;
+  }
+  .preview-components {
+    padding-top: 26px;
+    border-top: 1px solid currentColor;
+  }
+}
+@media (max-width: 620px) {
+  .preview-intro,
+  .vision-intro {
+    padding: 22px 22px 0;
+  }
+  .preview-intro {
+    flex-direction: column-reverse;
+  }
+  .preview-intro h3,
+  .vision-intro h3 {
+    font-size: 27px;
+  }
+  .preview-warning {
+    padding: 0 22px;
+  }
+  .preview-stage {
+    margin: 22px 22px 0;
+    padding: 22px;
+  }
+  .preview-caption {
+    padding: 17px 22px 22px;
+  }
+  .sample-button {
+    width: 100%;
+    gap: 12px;
+  }
+  .vision-grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 22px;
+  }
+  .vision-sample {
+    min-height: 145px;
+    padding: 22px;
+  }
+  .vision-type {
+    font-size: 72px;
+  }
+  .vision-ratio {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .vision-note {
+    margin: 0 22px;
+  }
+}
 @media (min-width: 1500px) {
   .site-header {
     padding-left: max(5%, calc((100vw - 1440px) / 2));

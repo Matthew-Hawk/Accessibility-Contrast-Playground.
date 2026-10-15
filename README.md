@@ -4,11 +4,13 @@ A small React + TypeScript playground for exploring accessible color pairs,
 with a Brutalist visual direction: oversized typography, heavy rules, warm
 paper, lime, and coral.
 
-**Current phase: 3 of 6 — contrast inputs and results, ready for review.**
+**Current phase: 4 of 6 — live preview and color vision simulation, ready for review.**
 The playground now has native color pickers, editable hex inputs, inline
 validation, a swap button, and instant results for all five WCAG contrast
-thresholds. Live previews, simulations, and suggestion controls follow in
-phases four and five; their pure color functions are already tested.
+thresholds. A live sample shows normal and large text, a working button, and
+an editable input in the selected pair. A responsive grid compares the original
+with protanopia, deuteranopia, and tritanopia simulations, including each pair's
+hex values and contrast ratio. Suggestion controls follow in phase five.
 
 Live demo: _To be added after the reviewed implementation is deployed._
 
@@ -98,7 +100,12 @@ The engine follows the [WCAG contrast definition](https://www.w3.org/TR/WCAG22/#
 and [unrounded threshold guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
 See [the color module guide](src/lib/color/README.md) for API contracts and examples.
 Contrast calculation and threshold evaluation are connected to the UI.
-Simulation and suggestion controls are planned for phases four and five.
+The simulation grid derives all three transformed pairs directly from the
+last valid colors, without storing duplicate state or using CSS filters.
+Each displayed ratio uses the same rounded RGB colors that render its sample.
+The original ratio is the reference for WCAG evaluation; simulated ratios
+describe the rendered approximations and do not predict an individual's vision.
+Suggestion controls are planned for phase five.
 
 ## Accessibility
 
@@ -121,6 +128,26 @@ drafts preserve the previous result. Native picker changes synchronize the
 hex field. Keyboard Tab reaches the swap button from the foreground field,
 and Enter activates it; visible focus was verified on both controls.
 The narrow mobile viewport stacks the panels without horizontal overflow.
+
+Phase-four browser checks passed: red-on-blue produced the expected matrix
+fixtures in all three simulation cards, and the cards' actual CSS colors
+matched their printed hex values. Invalid hex text left every preview and
+simulation ratio unchanged. Swapping reversed every pair without clearing
+the edited sample input. Tab reached the sample button and input; Enter
+activated the button and its feedback stayed in the app's fixed colors.
+The input's black-and-white focus ring remained visible against the selected
+pair. The preview stacks and the simulation grid becomes one column on narrow
+screens without overflowing controls; a wide desktop viewport displays four
+simulation cards in one row.
+
+Selected colors are intentionally restricted to the live sample and decorative
+simulation samples. Sample text, labels, and controls may fail contrast because
+testing that pair is the purpose of the preview. A warning precedes the sample;
+section titles, input instructions, printed hex values, ratios, and button
+feedback retain the app's own colors. Simulation specimens are hidden from
+screen readers to avoid repeating decorative content; their headings, values,
+and ratios remain available as text. No live announcements are added for all
+four simulation cards, avoiding a burst of duplicate announcements per edit.
 
 These are focused interaction checks, not a full keyboard or screen-reader
 audit. The complete audit and assistive-technology limitations are recorded
