@@ -1,6 +1,6 @@
 # Color module tests
 
-Run `npm test` from the project root. Seven Vitest files contain 124 tests:
+Run `npm test` from the project root. Seven Vitest files contain 126 tests:
 
 - `parse.test.ts`: supported syntax, normalization and invalid input.
 - `luminance.test.ts`: transfer breakpoints, channel round trips, known
@@ -17,7 +17,9 @@ Run `npm test` from the project root. Seven Vitest files contain 124 tests:
   independent exhaustive lightness grids check the nearest direction.
 - `colorPair.test.ts`: incomplete/invalid draft preservation, immediate valid
   updates, shorthand normalization, picker recovery, and swaps after invalid
-  input. The input reducer is separate from the pure color mathematics.
+  input. Mirrored foreground/background suggestion-application workflows verify
+  the opposite color stays unchanged and the applied pair reaches AAA. The
+  input reducer is separate from the pure color mathematics.
 
 This suite does not automate the rendered UI. Focused manual browser checks
 are documented in the main README; the complete accessibility audit remains

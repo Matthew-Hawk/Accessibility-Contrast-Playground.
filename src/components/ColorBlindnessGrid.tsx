@@ -36,7 +36,7 @@ export function ColorBlindnessGrid({
   return (
     <section className="vision-panel" aria-labelledby="vision-title">
       <div className="panel-label">
-        <h2 id="vision-title">04 / ANOTHER PERSPECTIVE</h2>
+        <h2 id="vision-title">05 / ANOTHER PERSPECTIVE</h2>
         <span aria-hidden="true">◐</span>
       </div>
       <div className="vision-intro">

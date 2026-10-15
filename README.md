@@ -4,13 +4,16 @@ A small React + TypeScript playground for exploring accessible color pairs,
 with a Brutalist visual direction: oversized typography, heavy rules, warm
 paper, lime, and coral.
 
-**Current phase: 4 of 6 — live preview and color vision simulation, ready for review.**
+**Current phase: 5 of 6 — accessible color suggestions, ready for review.**
 The playground now has native color pickers, editable hex inputs, inline
 validation, a swap button, and instant results for all five WCAG contrast
 thresholds. A live sample shows normal and large text, a working button, and
 an editable input in the selected pair. A responsive grid compares the original
 with protanopia, deuteranopia, and tritanopia simulations, including each pair's
-hex values and contrast ratio. Suggestion controls follow in phase five.
+hex values and contrast ratio. The suggestion panel lets you select a WCAG
+target, choose which color to adjust, and apply the nearest passing color.
+Unreachable targets show the best achievable color with an explicit failure
+message. The final accessibility audit and polish remain for phase six.
 
 Live demo: _To be added after the reviewed implementation is deployed._
 
@@ -29,7 +32,7 @@ npm run lint
 npm run format:check
 ```
 
-`npm test` runs seven test files (124 tests), covering color math and input state.
+`npm test` runs seven test files (126 tests), covering color math and input state.
 `npm run test:watch` starts watch mode. Tests run in Node without React or a DOM.
 
 Node 24 is selected by `.node-version` for Cloudflare Builds and GitHub Actions.
@@ -67,6 +70,8 @@ and [build image version files](https://developers.cloudflare.com/workers/ci-cd/
 - `src/App.tsx`: page composition and landmarks.
 - `src/lib/colorPair.ts`: editable drafts and last-valid colors; the ratio and
   results are derived rather than stored.
+- `src/lib/wcagCriteria.ts`: shared presentation labels for target options,
+  verdicts, and result rows.
 - `src/styles.css`: responsive CSS and design tokens.
 - `tests/`: Vitest tests for the pure color functions.
 
@@ -105,7 +110,17 @@ last valid colors, without storing duplicate state or using CSS filters.
 Each displayed ratio uses the same rounded RGB colors that render its sample.
 The original ratio is the reference for WCAG evaluation; simulated ratios
 describe the rendered approximations and do not predict an individual's vision.
-Suggestion controls are planned for phase five.
+The suggestion panel uses this pure search directly. Its selected target is
+shared with the main verdict, result-row marker, and polite status message;
+AA normal text remains the default. Applying changes only the chosen color.
+The opposite color, sample input text, target, and adjustment choice persist.
+Keyboard focus returns to the changed hex input when the apply button goes away.
+
+Suggestions continue to describe the last valid pair while an invalid draft
+is present, with a visible note and disabled apply button. A passing pair
+shows that no adjustment is needed. A best-effort color is explicitly labeled
+as still failing; it can be applied, but once it is active the redundant apply
+action is removed. Try adjusting the other color or changing the target.
 
 ## Accessibility
 
@@ -118,7 +133,7 @@ Swapping exchanges the last valid colors and clears unfinished drafts.
 
 Application chrome uses dark ink on paper, lime, or coral independently of
 the selected pair. Pass/fail badges include icons and text. A polite, atomic
-status region announces the pair, ratio, and AA normal-text result, including
+status region announces the pair, ratio, and selected target's result, including
 swaps where the numerical ratio stays unchanged.
 
 Phase-three browser checks passed in the local in-app browser: #777 on white
@@ -139,6 +154,19 @@ The input's black-and-white focus ring remained visible against the selected
 pair. The preview stacks and the simulation grid becomes one column on narrow
 screens without overflowing controls; a wide desktop viewport displays four
 simulation cards in one row.
+
+Phase-five browser checks passed: #777777 on white suggests #767676 for AA
+normal text, and keyboard application changes only the foreground. For white
+on #777777, adjusting the background at AAA normal text suggests #595959;
+applying it preserves the white foreground and shows a passing 7.00 ratio.
+The unrounded ratio exceeds 7; display rounding is not used for evaluation.
+AAA normal text against a fixed #777777 background correctly reports no
+single-color solution, offers black at 4.69 as still failing, and removes the
+repeat apply action after that endpoint is chosen. Changing the other color
+then offers #959595 against black, reaching 7.01. Target changes update the
+verdict and selected result row. Invalid input disables apply. Radio arrow
+keys, Tab, and Enter work, focus returns to the applied hex field, and narrow
+layouts stack the controls without horizontal overflow.
 
 Selected colors are intentionally restricted to the live sample and decorative
 simulation samples. Sample text, labels, and controls may fail contrast because

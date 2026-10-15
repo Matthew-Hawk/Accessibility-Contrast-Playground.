@@ -14,7 +14,7 @@ export function PreviewCard({ foreground, background }: PreviewCardProps) {
   return (
     <section className="preview-panel" aria-labelledby="preview-title">
       <div className="panel-label">
-        <h2 id="preview-title">03 / IN THE WILD</h2>
+        <h2 id="preview-title">04 / IN THE WILD</h2>
         <span aria-hidden="true">↳</span>
       </div>
       <div className="preview-intro">

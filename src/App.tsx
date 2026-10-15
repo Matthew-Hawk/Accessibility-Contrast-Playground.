@@ -63,7 +63,7 @@ export default function App() {
       <footer>
         <span>CONTRAST PLAYGROUND © 2026</span>
         <span>BUILT WITH INTENTION. OPEN TO EVERYONE.</span>
-        <span>PREVIEW & SIMULATION / 04 OF 06</span>
+        <span>ACCESSIBLE SUGGESTIONS / 05 OF 06</span>
       </footer>
     </>
   );

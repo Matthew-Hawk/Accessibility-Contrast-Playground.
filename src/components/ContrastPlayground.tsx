@@ -1,15 +1,42 @@
-import { useReducer } from 'react';
-import { contrastRatio } from '../lib/color/contrast';
-import { rgbToHex } from '../lib/color/parse';
+import { useReducer, useRef, useState } from 'react';
+import { contrastRatio, DEFAULT_TARGET } from '../lib/color/contrast';
+import type { WcagTarget } from '../lib/color/contrast';
+import { parseHex, rgbToHex } from '../lib/color/parse';
+import { suggestColor } from '../lib/color/suggest';
+import type { ColorAdjustment } from '../lib/color/types';
 import { colorPairReducer, INITIAL_COLOR_PAIR } from '../lib/colorPair';
 import { ColorInput } from './ColorInput';
 import { ContrastResult } from './ContrastResult';
 import { PreviewCard } from './PreviewCard';
 import { ColorBlindnessGrid } from './ColorBlindnessGrid';
+import { Suggestion } from './Suggestion';
 
 export function ContrastPlayground() {
   const [pair, dispatch] = useReducer(colorPairReducer, INITIAL_COLOR_PAIR);
+  const [target, setTarget] = useState<WcagTarget>(DEFAULT_TARGET);
+  const [adjustment, setAdjustment] = useState<ColorAdjustment>('foreground');
+  const foregroundInput = useRef<HTMLInputElement>(null);
+  const backgroundInput = useRef<HTMLInputElement>(null);
   const ratio = contrastRatio(pair.foreground.color, pair.background.color);
+  const suggestion = suggestColor(
+    pair.foreground.color,
+    pair.background.color,
+    { target, adjust: adjustment },
+  );
+  const invalidDraft =
+    parseHex(pair.foreground.input) === null ||
+    parseHex(pair.background.input) === null;
+
+  function applySuggestion() {
+    if (invalidDraft || suggestion.status === 'already-passing') return;
+    dispatch({ type: 'change', field: adjustment, value: suggestion.hex });
+    // The apply button disappears once the pair passes. Keep keyboard focus
+    // on the changed field rather than losing it when that button unmounts.
+    (adjustment === 'foreground'
+      ? foregroundInput
+      : backgroundInput
+    ).current?.focus();
+  }
 
   return (
     <div id="playground" tabIndex={-1}>
@@ -27,6 +54,7 @@ export function ContrastPlayground() {
               text and background colors.
             </p>
             <ColorInput
+              inputRef={foregroundInput}
               label="Foreground"
               description="TEXT & ICONS"
               value={pair.foreground}
@@ -49,6 +77,7 @@ export function ContrastPlayground() {
               <span />
             </div>
             <ColorInput
+              inputRef={backgroundInput}
               label="Background"
               description="THE CANVAS"
               value={pair.background}
@@ -66,11 +95,21 @@ export function ContrastPlayground() {
           </div>
         </section>
         <ContrastResult
+          target={target}
           ratio={ratio}
           foregroundHex={rgbToHex(pair.foreground.color)}
           backgroundHex={rgbToHex(pair.background.color)}
         />
       </div>
+      <Suggestion
+        suggestion={suggestion}
+        originalHex={rgbToHex(pair[adjustment].color)}
+        target={target}
+        invalidDraft={invalidDraft}
+        onTargetChange={setTarget}
+        onAdjustmentChange={setAdjustment}
+        onApply={applySuggestion}
+      />
       <PreviewCard
         foreground={pair.foreground.color}
         background={pair.background.color}

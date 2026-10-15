@@ -1,8 +1,10 @@
 import { useId } from 'react';
+import type { Ref } from 'react';
 import { parseHex, rgbToHex } from '../lib/color/parse';
 import type { ColorFieldState } from '../lib/colorPair';
 
 interface ColorInputProps {
+  readonly inputRef?: Ref<HTMLInputElement>;
   readonly label: string;
   readonly description: string;
   readonly value: ColorFieldState;
@@ -11,6 +13,7 @@ interface ColorInputProps {
 }
 
 export function ColorInput({
+  inputRef,
   label,
   description,
   value,
@@ -40,6 +43,7 @@ export function ColorInput({
           <label htmlFor={`${id}-hex`}>Hex value</label>
           <input
             id={`${id}-hex`}
+            ref={inputRef}
             type="text"
             value={value.input}
             onChange={(event) => onChange(event.target.value)}

@@ -1,8 +1,40 @@
 import { describe, expect, it } from 'vitest';
 import { contrastRatio } from '../src/lib/color/contrast';
 import { colorPairReducer, INITIAL_COLOR_PAIR } from '../src/lib/colorPair';
+import { parseHex } from '../src/lib/color/parse';
+import { suggestColor } from '../src/lib/color/suggest';
 
 describe('color input state', () => {
+  it.each(['foreground', 'background'] as const)(
+    'applies a suggestion to only the selected %s and reaches the target',
+    (adjust) => {
+      const opposite = adjust === 'foreground' ? 'background' : 'foreground';
+      const state = {
+        [adjust]: { input: '#777777', color: parseHex('#777777')! },
+        [opposite]: { input: '#FFFFFF', color: parseHex('#FFFFFF')! },
+      };
+      // Keep a fully typed pair while constructing the mirrored test cases.
+      const pair = {
+        foreground: state.foreground,
+        background: state.background,
+      };
+      const suggestion = suggestColor(
+        pair.foreground.color,
+        pair.background.color,
+        { adjust, target: 'aaaNormal' },
+      );
+      const applied = colorPairReducer(pair, {
+        type: 'change',
+        field: adjust,
+        value: suggestion.hex,
+      });
+      expect(applied[opposite]).toBe(pair[opposite]);
+      expect(applied[adjust].input).toBe(suggestion.hex);
+      expect(
+        contrastRatio(applied.foreground.color, applied.background.color),
+      ).toBeGreaterThanOrEqual(7);
+    },
+  );
   it('keeps the last valid pair while preserving invalid input for correction', () => {
     const state = colorPairReducer(INITIAL_COLOR_PAIR, {
       type: 'change',

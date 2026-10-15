@@ -1,27 +1,24 @@
 import { evaluateContrast, WCAG_THRESHOLDS } from '../lib/color/contrast';
 import type { WcagTarget } from '../lib/color/contrast';
-
-const criteria: readonly { key: WcagTarget; label: string; level: string }[] = [
-  { key: 'aaNormal', label: 'Normal text', level: 'AA' },
-  { key: 'aaLarge', label: 'Large text', level: 'AA' },
-  { key: 'aaaNormal', label: 'Normal text', level: 'AAA' },
-  { key: 'aaaLarge', label: 'Large text', level: 'AAA' },
-  { key: 'aaNonText', label: 'UI components & graphics', level: 'AA' },
-];
+import { WCAG_CRITERIA, WCAG_TARGETS } from '../lib/wcagCriteria';
 
 interface ContrastResultProps {
+  readonly target: WcagTarget;
   readonly ratio: number;
   readonly foregroundHex: string;
   readonly backgroundHex: string;
 }
 
 export function ContrastResult({
+  target,
   ratio,
   foregroundHex,
   backgroundHex,
 }: ContrastResultProps) {
   const results = evaluateContrast(ratio);
   const displayedRatio = ratio.toFixed(2);
+  const passesTarget = results[target];
+  const targetLabel = WCAG_CRITERIA[target].targetLabel;
 
   return (
     <section className="contrast-result" aria-labelledby="result-title">
@@ -30,7 +27,7 @@ export function ContrastResult({
         <span aria-hidden="true">↗</span>
       </div>
       <div
-        className={`ratio-summary ${results.aaNormal ? 'is-passing' : 'is-failing'}`}
+        className={`ratio-summary ${passesTarget ? 'is-passing' : 'is-failing'}`}
       >
         <span className="small-label">WCAG 2.x CONTRAST RATIO</span>
         <div className="ratio-value">
@@ -38,10 +35,8 @@ export function ContrastResult({
           <span>:1</span>
         </div>
         <p className="ratio-verdict">
-          <span aria-hidden="true">{results.aaNormal ? '✓' : '×'}</span>{' '}
-          {results.aaNormal
-            ? 'Passes AA for normal text'
-            : 'Fails AA for normal text'}
+          <span aria-hidden="true">{passesTarget ? '✓' : '×'}</span>{' '}
+          {passesTarget ? 'Passes' : 'Fails'} {targetLabel}
         </p>
       </div>
       <p
@@ -52,7 +47,7 @@ export function ContrastResult({
       >
         Foreground {foregroundHex}, background {backgroundHex}. Contrast ratio{' '}
         {displayedRatio} to 1.
-        {results.aaNormal ? ' Passes' : ' Fails'} AA normal text.
+        {passesTarget ? ' Passes' : ' Fails'} {targetLabel}.
       </p>
       <div className="criteria-list">
         <div className="criteria-header" aria-hidden="true">
@@ -60,11 +55,20 @@ export function ContrastResult({
           <span>RESULT</span>
         </div>
         <ul aria-label="WCAG contrast results">
-          {criteria.map(({ key, label, level }) => (
-            <li key={key}>
+          {WCAG_TARGETS.map((key) => (
+            <li
+              key={key}
+              className={key === target ? 'selected-criterion' : undefined}
+            >
               <span className="criterion-copy">
                 <span className="criterion-label">
-                  {label} <span className="level-label">{level}</span>
+                  {WCAG_CRITERIA[key].label}{' '}
+                  <span className="level-label">
+                    {WCAG_CRITERIA[key].level}
+                  </span>
+                  {key === target && (
+                    <span className="target-marker">Target</span>
+                  )}
                 </span>
                 <span className="criterion-threshold">
                   At least {WCAG_THRESHOLDS[key]}:1
