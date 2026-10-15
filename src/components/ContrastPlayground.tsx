@@ -1,0 +1,68 @@
+import { useReducer } from 'react';
+import { contrastRatio } from '../lib/color/contrast';
+import { rgbToHex } from '../lib/color/parse';
+import { colorPairReducer, INITIAL_COLOR_PAIR } from '../lib/colorPair';
+import { ColorInput } from './ColorInput';
+import { ContrastResult } from './ContrastResult';
+
+export function ContrastPlayground() {
+  const [pair, dispatch] = useReducer(colorPairReducer, INITIAL_COLOR_PAIR);
+  const ratio = contrastRatio(pair.foreground.color, pair.background.color);
+
+  return (
+    <div className="workspace" id="playground" tabIndex={-1}>
+      <section className="color-controls" aria-labelledby="controls-title">
+        <div className="panel-label">
+          <h2 id="controls-title">01 / YOUR COLOR PAIR</h2>
+          <span aria-hidden="true">✳</span>
+        </div>
+        <div className="controls-body">
+          <span className="pill">CHANGE A COLOR. SEE THE DIFFERENCE.</span>
+          <h3>Pick your pair.</h3>
+          <p className="controls-intro">
+            A little adjustment can make a big difference. Start with your text
+            and background colors.
+          </p>
+          <ColorInput
+            label="Foreground"
+            description="TEXT & ICONS"
+            value={pair.foreground}
+            onChange={(value) =>
+              dispatch({ type: 'change', field: 'foreground', value })
+            }
+            onBlur={() => dispatch({ type: 'normalize', field: 'foreground' })}
+          />
+          <div className="swap-row">
+            <span />
+            <button
+              type="button"
+              className="swap-button"
+              onClick={() => dispatch({ type: 'swap' })}
+            >
+              <span aria-hidden="true">⇅</span> Swap colors
+            </button>
+            <span />
+          </div>
+          <ColorInput
+            label="Background"
+            description="THE CANVAS"
+            value={pair.background}
+            onChange={(value) =>
+              dispatch({ type: 'change', field: 'background', value })
+            }
+            onBlur={() => dispatch({ type: 'normalize', field: 'background' })}
+          />
+          <p className="controls-footnote">
+            <span aria-hidden="true">↳</span> Results update as you type. No
+            submit button needed.
+          </p>
+        </div>
+      </section>
+      <ContrastResult
+        ratio={ratio}
+        foregroundHex={rgbToHex(pair.foreground.color)}
+        backgroundHex={rgbToHex(pair.background.color)}
+      />
+    </div>
+  );
+}

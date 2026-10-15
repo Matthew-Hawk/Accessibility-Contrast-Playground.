@@ -4,9 +4,11 @@ A small React + TypeScript playground for exploring accessible color pairs,
 with a Brutalist visual direction: oversized typography, heavy rules, warm
 paper, lime, and coral.
 
-**Current phase: 2 of 6 — color math and unit tests, ready for review.**
-The pure color engine is implemented and tested. The page remains a static
-visual foundation; controls and integration begin in phase three.
+**Current phase: 3 of 6 — contrast inputs and results, ready for review.**
+The playground now has native color pickers, editable hex inputs, inline
+validation, a swap button, and instant results for all five WCAG contrast
+thresholds. Live previews, simulations, and suggestion controls follow in
+phases four and five; their pure color functions are already tested.
 
 Live demo: _To be added after the reviewed implementation is deployed._
 
@@ -25,7 +27,7 @@ npm run lint
 npm run format:check
 ```
 
-`npm test` runs the six color-module test files (116 tests).
+`npm test` runs seven test files (124 tests), covering color math and input state.
 `npm run test:watch` starts watch mode. Tests run in Node without React or a DOM.
 
 Node 24 is selected by `.node-version` for Cloudflare Builds and GitHub Actions.
@@ -60,7 +62,9 @@ and [build image version files](https://developers.cloudflare.com/workers/ci-cd/
 
 - `src/lib/color/`: framework-free color mathematics and documented input contracts.
 - `src/components/`: small presentation components.
-- `src/App.tsx`: page composition and, in later phases, application state.
+- `src/App.tsx`: page composition and landmarks.
+- `src/lib/colorPair.ts`: editable drafts and last-valid colors; the ratio and
+  results are derived rather than stored.
 - `src/styles.css`: responsive CSS and design tokens.
 - `tests/`: Vitest tests for the pure color functions.
 
@@ -93,18 +97,34 @@ This can happen for AAA normal text against a mid-gray background.
 The engine follows the [WCAG contrast definition](https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio)
 and [unrounded threshold guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
 See [the color module guide](src/lib/color/README.md) for API contracts and examples.
-UI integration of these functions is planned for phases three through five.
+Contrast calculation and threshold evaluation are connected to the UI.
+Simulation and suggestion controls are planned for phases four and five.
 
 ## Accessibility
 
-The foundation uses semantic landmarks, ordered headings, a skip link,
-visible focus indicators, responsive layout, and reduced-motion rules.
-Application chrome uses dark ink on paper, lime, or coral. User-selected
-colors will be isolated to preview content. Future controls will have
-visible labels, inline validation, and polite announcements.
+The app uses semantic landmarks, ordered headings, a skip link, visible focus
+indicators, responsive layout, and reduced-motion rules. Each color has a
+fieldset and legend, with visible labels for its native picker and hex input.
+Invalid drafts have an inline error, `aria-invalid`, and an error description;
+they leave the last valid color active. Valid shorthand normalizes on blur.
+Swapping exchanges the last valid colors and clears unfinished drafts.
 
-Keyboard-only verification: pending browser verification. A complete keyboard
-audit and results will be recorded in phase six; no audit is claimed yet.
+Application chrome uses dark ink on paper, lime, or coral independently of
+the selected pair. Pass/fail badges include icons and text. A polite, atomic
+status region announces the pair, ratio, and AA normal-text result, including
+swaps where the numerical ratio stays unchanged.
+
+Phase-three browser checks passed in the local in-app browser: #777 on white
+displays 4.48 and fails AA normal; #767676 displays 4.54 and passes; black on
+white is 21.00; identical colors are 1.00 and fail all thresholds. Invalid
+drafts preserve the previous result. Native picker changes synchronize the
+hex field. Keyboard Tab reaches the swap button from the foreground field,
+and Enter activates it; visible focus was verified on both controls.
+The narrow mobile viewport stacks the panels without horizontal overflow.
+
+These are focused interaction checks, not a full keyboard or screen-reader
+audit. The complete audit and assistive-technology limitations are recorded
+in phase six.
 
 ## Limitations
 

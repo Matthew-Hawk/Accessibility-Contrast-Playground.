@@ -1,13 +1,4 @@
-import { FoundationPreview } from './components/FoundationPreview';
-
-const phases = [
-  'Project foundation',
-  'Color math + tests',
-  'Contrast controls',
-  'Preview + simulation',
-  'Accessible suggestions',
-  'Audit + final polish',
-];
+import { ContrastPlayground } from './components/ContrastPlayground';
 
 export default function App() {
   return (
@@ -30,11 +21,11 @@ export default function App() {
           A LITTLE COLOR.
           <br />A BIG DIFFERENCE.
         </span>
-        <a className="header-link" href="#build-status">
-          THE BUILD <span aria-hidden="true">↘</span>
+        <a className="header-link" href="#playground">
+          TRY A PAIR <span aria-hidden="true">↘</span>
         </a>
       </header>
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         <div className="eyebrow">
           <span className="status-dot" /> ACCESSIBILITY IS A DESIGN CHOICE.{' '}
           <span className="edition">VOL. 01 / COLOR & CONTRAST</span>
@@ -56,41 +47,7 @@ export default function App() {
             Aa<span>MAKE IT READABLE.</span>
           </div>
         </section>
-        <div className="workspace">
-          <section className="foundation" aria-labelledby="foundation-title">
-            <div className="panel-label">
-              <span>01 / THE FOUNDATION</span>
-              <span aria-hidden="true">✳</span>
-            </div>
-            <div className="foundation-body">
-              <span className="pill">WORK IN PROGRESS</span>
-              <h2 id="foundation-title">
-                Bold by design.
-                <br />
-                Accessible by default.
-              </h2>
-              <p>
-                A playground for testing color pairs against WCAG 2.x. Built in
-                small, reviewable steps, with the math at its core.
-              </p>
-              <div className="build-status" id="build-status">
-                <h3>ON THE WORKBENCH</h3>
-                <ol>
-                  {phases.map((phase, index) => (
-                    <li key={phase} className={index === 0 ? 'current' : ''}>
-                      <span className="phase-number">0{index + 1}</span>
-                      <span>{phase}</span>
-                      <span className="phase-state">
-                        {index === 0 ? 'IN REVIEW' : 'UP NEXT'}
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          </section>
-          <FoundationPreview />
-        </div>
+        <ContrastPlayground />
         <aside className="manifesto">
           <span aria-hidden="true">↳</span>
           <p>
@@ -106,7 +63,7 @@ export default function App() {
       <footer>
         <span>CONTRAST PLAYGROUND © 2026</span>
         <span>BUILT WITH INTENTION. OPEN TO EVERYONE.</span>
-        <span>FOUNDATION / 01 OF 06</span>
+        <span>CONTRAST CONTROLS / 03 OF 06</span>
       </footer>
     </>
   );
