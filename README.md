@@ -28,6 +28,34 @@ npm run format:check
 `npm test` runs the six color-module test files (116 tests).
 `npm run test:watch` starts watch mode. Tests run in Node without React or a DOM.
 
+Node 24 is selected by `.node-version` for Cloudflare Builds and GitHub Actions.
+CI runs a clean `npm ci`, formatting, lint, unit tests, and the production build
+on Linux for pushes and pull requests targeting `main`. Workflow actions are
+pinned to commit SHAs and the workflow only has read access to repository content.
+
+## Cloudflare Workers deployment
+
+Connect this GitHub repository and use these Workers Builds settings:
+
+- Production branch: `main`.
+- Root directory: `/` (the directory containing `package.json`).
+- Build command: `npm run build`.
+- Deploy command: `npx wrangler deploy --assets ./dist`.
+
+Cloudflare installs dependencies before building. Keep the automatic dependency
+installation enabled and include development dependencies because Vite and
+TypeScript are build tools. This app deploys as static assets; no Worker script,
+Cloudflare Vite plugin, or application secrets are required.
+
+Commit the complete `src/` and `tests/` directories, configuration, and
+`package-lock.json`. Do not upload `dist/`, `node_modules/`, or
+`*.tsbuildinfo`: these are generated locally or by the build service.
+If an earlier build reported that `/src/main.tsx` could not be resolved,
+retry against the latest `main` commit containing that exact case-sensitive path.
+
+References: [Workers static assets](https://developers.cloudflare.com/workers/static-assets/get-started/)
+and [build image version files](https://developers.cloudflare.com/workers/ci-cd/builds/build-image/).
+
 ## Architecture
 
 - `src/lib/color/`: framework-free color mathematics and documented input contracts.
