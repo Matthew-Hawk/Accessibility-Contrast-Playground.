@@ -14,7 +14,7 @@ export default function App() {
           <span>
             CONTRAST
             <br />
-            PLAYGROUND<span className="brand-dot">®</span>
+            PLAYGROUND
           </span>
         </a>
         <span className="header-note">
@@ -63,7 +63,7 @@ export default function App() {
       <footer>
         <span>CONTRAST PLAYGROUND © 2026</span>
         <span>BUILT WITH INTENTION. OPEN TO EVERYONE.</span>
-        <span>ACCESSIBLE SUGGESTIONS / 05 OF 06</span>
+        <span>WCAG 2.x / sRGB</span>
       </footer>
     </>
   );

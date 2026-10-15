@@ -54,7 +54,7 @@ export function ContrastResult({
           <span>THE STANDARD</span>
           <span>RESULT</span>
         </div>
-        <ul aria-label="WCAG contrast results">
+        <ul role="list" aria-label="WCAG contrast results">
           {WCAG_TARGETS.map((key) => (
             <li
               key={key}
